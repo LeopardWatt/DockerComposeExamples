@@ -9,7 +9,7 @@ services:
     - MYSQL_ROOT_PASSWORD=root
     - MYSQL_DATABASE=root
   
-    ports:S
+    ports:
     - "3306:3306"
    # volumes:
    # - /srv/docker/redmine/mysql:/var/lib/mysql
@@ -20,7 +20,7 @@ services:
     hostname: eschool-backend
     restart: always
     depends_on:
-    - eschool-mysql
+    - mysql
     ports:
     - "8080:8080"
     
@@ -33,7 +33,7 @@ services:
     hostname: eschool-frontend
     restart: always
     depends_on:
-    - eschool-backend
+    - backend
     ports:
     - "80:80"
     
