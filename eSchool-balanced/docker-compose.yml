@@ -1,0 +1,87 @@
+version: '2'
+
+services:
+  mysql:
+    image: mysql:5.6
+    hostname: eschool-mysql
+    restart: always
+    environment:
+    - MYSQL_ROOT_PASSWORD=root
+    - MYSQL_DATABASE=root
+    ports:
+    - "3306:3306"
+    networks: 
+    - eschool-network
+
+   # volumes:
+   # - /srv/docker/mysql:/home/mysql
+
+  backend:
+    image: eschool:1.0
+    hostname: eschool-backend
+    restart: always
+    environment:
+    - MYSQL_DATABASE=eschool
+    - DATASOURCE_URL=jdbc:mysql://eschool-mysql:3306/eschool?useUnicode=true&characterEncoding=utf8
+    - DATASOURCE_USERNAME=root
+    - DATASOURCE_PASSWORD=root
+    depends_on:
+    - mysql
+    ports:
+    - "8080:8080"
+    networks: 
+    - eschool-network
+
+   # volumes:
+   # - /srv/docker/backend:/home/backend
+
+  backend2:
+    image: eschool:1.0
+    hostname: eschool-backend2
+    restart: always
+    environment:
+    - MYSQL_DATABASE=eschool
+    - DATASOURCE_URL=jdbc:mysql://eschool-mysql:3306/eschool?useUnicode=true&characterEncoding=utf8
+    - DATASOURCE_USERNAME=root
+    - DATASOURCE_PASSWORD=root
+    depends_on:
+    - mysql
+    ports:
+    - "8090:8080"
+    networks: 
+    - eschool-network
+
+   # volumes:
+   # - /srv/docker/backend:/home/backend
+
+  frontend:
+    image: itca_front:v1
+    hostname: eschool-frontend
+    restart: always
+    depends_on:
+    - backend
+    ports:
+    - "80:80"
+    networks: 
+    - eschool-network
+
+    #volumes:
+    # - /srv/docker/frontend/:/home/frontend
+    
+  frontend2:
+    image: itca_front:v1
+    hostname: eschool-frontend2
+    restart: always
+    depends_on:
+    - backend
+    ports:
+    - "90:80"
+    networks: 
+    - eschool-network
+
+    #volumes:
+    # - /srv/docker/frontend/:/home/frontend
+    
+networks:
+  eschool-network:
+    driver: bridge
