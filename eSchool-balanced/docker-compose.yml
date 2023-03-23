@@ -17,7 +17,7 @@ services:
     - /srv/docker/eSchool-mysql/mysql:/var/lib/mysql
 
   balancer:
-    image: nginx
+    image: nginx-upstream:1.0
     hostname: eschool-balancer
     restart: always
     depends_on:
