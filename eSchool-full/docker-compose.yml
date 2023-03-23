@@ -13,8 +13,8 @@ services:
     networks: 
     - eschool-network
 
-   # volumes:
-   # - /srv/docker/mysql:/home/mysql
+    volumes:
+    - /srv/docker/eSchool-mysql/mysql:/var/lib/mysql
 
   backend:
     image: eschool:1.0

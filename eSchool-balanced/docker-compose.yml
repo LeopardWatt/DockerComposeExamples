@@ -13,8 +13,22 @@ services:
     networks: 
     - eschool-network
 
+    volumes:
+    - /srv/docker/eSchool-mysql/mysql:/var/lib/mysql
+
+  balancer:
+    image: nginx
+    hostname: eschool-balancer
+    restart: always
+    depends_on:
+    - frontend
+    - Frontend1
+    ports:
+    - "80:80"
+    networks: 
+    - eschool-network
    # volumes:
-   # - /srv/docker/mysql:/home/mysql
+   # - /srv/docker/eSchool-balancer:/home/nginx
 
   backend:
     image: eschool:1.0
@@ -61,7 +75,7 @@ services:
     depends_on:
     - backend
     ports:
-    - "80:80"
+    - "85:80"
     networks: 
     - eschool-network
 
@@ -75,13 +89,13 @@ services:
     depends_on:
     - backend
     ports:
-    - "90:80"
+    - "86:80"
     networks: 
     - eschool-network
 
     #volumes:
     # - /srv/docker/frontend/:/home/frontend
-    
+
 networks:
   eschool-network:
     driver: bridge
