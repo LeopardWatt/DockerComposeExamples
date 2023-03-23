@@ -8,12 +8,10 @@ services:
     environment:
     - MYSQL_ROOT_PASSWORD=root
     - MYSQL_DATABASE=root
-  
     ports:
     - "3306:3306"
    # volumes:
-   # - /srv/docker/redmine/mysql:/var/lib/mysql
-
+   # - /srv/docker/mysql:/home/mysql
 
   backend:
     image: eschool:1.0
@@ -24,15 +22,12 @@ services:
     - DATASOURCE_URL=jdbc:mysql://eschool-mysql:3306/eschool?useUnicode=true&characterEncoding=utf8
     - DATASOURCE_USERNAME=root
     - DATASOURCE_PASSWORD=root
-  
     depends_on:
     - mysql
     ports:
     - "8080:8080"
-    
    # volumes:
-   # - /srv/docker/redmine/redmine_mysql:/home/redmine/data
-
+   # - /srv/docker/backend:/home/backend
 
   frontend:
     image: itca_front:v1
@@ -42,8 +37,5 @@ services:
     - backend
     ports:
     - "80:80"
-    
     #volumes:
-    # - /srv/docker/redmine/redmine_mysql:/home/redmine/data
-
-    
+    # - /srv/docker/frontend/:/home/frontend
