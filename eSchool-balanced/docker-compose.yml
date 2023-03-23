@@ -22,7 +22,7 @@ services:
     restart: always
     depends_on:
     - frontend
-    - Frontend1
+    - frontend2
     ports:
     - "80:80"
     networks: 
