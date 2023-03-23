@@ -10,6 +10,8 @@ services:
     - MYSQL_DATABASE=root
     ports:
     - "3306:3306"
+    networks: eschool-network
+
    # volumes:
    # - /srv/docker/mysql:/home/mysql
 
@@ -26,6 +28,8 @@ services:
     - mysql
     ports:
     - "8080:8080"
+    networks: eschool-network
+
    # volumes:
    # - /srv/docker/backend:/home/backend
 
@@ -37,5 +41,11 @@ services:
     - backend
     ports:
     - "80:80"
+    networks: eschool-network
+
     #volumes:
     # - /srv/docker/frontend/:/home/frontend
+    
+networks:
+  eschool-network:
+    driver: bridge
