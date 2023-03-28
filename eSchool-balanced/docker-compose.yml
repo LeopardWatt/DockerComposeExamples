@@ -14,24 +14,10 @@ services:
     - eschool-network
 
     volumes:
-    - /srv/docker/eSchool-mysql/mysql:/var/lib/mysql
-
-  balancer:
-    image: nginx-upstream:1.0
-    hostname: eschool-balancer
-    restart: always
-    depends_on:
-    - frontend
-    - frontend2
-    ports:
-    - "80:80"
-    networks: 
-    - eschool-network
-   # volumes:
-   # - /srv/docker/eSchool-balancer:/home/nginx
+    - /srv/docker/eSchool-mysql-se/mysql:/var/lib/mysql
 
   backend:
-    image: eschool:1.0
+    image: eschool:1.2
     hostname: eschool-backend
     restart: always
     environment:
@@ -42,15 +28,12 @@ services:
     depends_on:
     - mysql
     ports:
-    - "8080:8080"
+    - "8180:8080"
     networks: 
     - eschool-network
 
-   # volumes:
-   # - /srv/docker/backend:/home/backend
-
   backend2:
-    image: eschool:1.0
+    image: eschool:1.2
     hostname: eschool-backend2
     restart: always
     environment:
@@ -61,40 +44,54 @@ services:
     depends_on:
     - mysql
     ports:
-    - "8090:8080"
+    - "8190:8080"
     networks: 
     - eschool-network
 
-   # volumes:
-   # - /srv/docker/backend:/home/backend
-
   frontend:
-    image: itca_front:v1
+    image: itca_front_https:v1.4 
     hostname: eschool-frontend
     restart: always
     depends_on:
     - backend
     ports:
-    - "85:80"
+    - "88:80"
     networks: 
     - eschool-network
 
-    #volumes:
-    # - /srv/docker/frontend/:/home/frontend
-    
   frontend2:
-    image: itca_front:v1
+    image: itca_front_https_se:v1.4
     hostname: eschool-frontend2
     restart: always
     depends_on:
-    - backend
+    - backend2
     ports:
-    - "86:80"
+    - "99:80"
     networks: 
     - eschool-network
 
-    #volumes:
-    # - /srv/docker/frontend/:/home/frontend
+  balancer:
+    image: nginx-upstream:1.5    
+    hostname: eschool-balancer
+  #  restart: always
+    depends_on:
+    - frontend
+    - frontend2
+   
+    volumes:
+     - type: bind
+       source: /srv/docker/eSchool-nginx/nginx.conf
+       target: /etc/nginx/nginx.conf
+     - type: bind
+       source: /etc/letsencrypt/archive/eschool.devops.uno
+       target: /home/user/letsencrypt/data/certs 
+    ports:
+    - "80:80"
+    - "443:443"    
+    - "8080:8080"
+    - "8090:8090"
+    networks: 
+    - eschool-network
 
 networks:
   eschool-network:
