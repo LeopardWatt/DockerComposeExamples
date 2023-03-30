@@ -32,9 +32,6 @@ services:
     networks: 
     - eschool-network
 
-   # volumes:
-   # - /srv/docker/backend:/home/backend
-
   frontend:
     image: itca_front:v1
     hostname: eschool-frontend
@@ -45,9 +42,6 @@ services:
     - "80:80"
     networks: 
     - eschool-network
-
-    #volumes:
-    # - /srv/docker/frontend/:/home/frontend
     
 networks:
   eschool-network:
