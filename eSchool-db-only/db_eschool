@@ -1,0 +1,16 @@
+----------------------------------------------------------
+root
+root
+----------------------------------------------------------
+Backup Database
+mysqldump -u root -p eschool > /home/eschool_db.sql
+-----------------------------------------------------------
+mysql -u root -p
+
+CREATE DATABASE eschool;
+GRANT ALL PRIVILEGES ON eschool.* TO 'root'@'localhost' IDENTIFIED BY 'root';
+FLUSH PRIVILEGES;
+exit;
+----------------------------------------------------------
+Restore Database
+mysql -u root -p -D eschool < /home/eschool_db.sql
